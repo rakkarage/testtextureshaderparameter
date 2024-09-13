@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3 uid="uid://d2fcbmlh0ysiu"]
+
+[ext_resource type="Shader" path="res://new_shader.gdshader" id="1_4y55l"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_djaig"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_iv6a3"]
+viewport_path = NodePath("Test 0/MeshInstance3D/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jtib8"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_iv6a3")
+
+[sub_resource type="QuadMesh" id="QuadMesh_88gj7"]
+size = Vector2(0.5, 0.5)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_dxkcj"]
+viewport_path = NodePath("Test 1/MeshInstance3D/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_acw1p"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_4y55l")
+shader_parameter/test_texture = SubResource("ViewportTexture_dxkcj")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="Test 0" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Test 0"]
+mesh = SubResource("QuadMesh_djaig")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_jtib8")
+
+[node name="SubViewport" type="SubViewport" parent="Test 0/MeshInstance3D"]
+
+[node name="ColorRect" type="ColorRect" parent="Test 0/MeshInstance3D/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 1)
+
+[node name="Test 1" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Test 1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0.1)
+mesh = SubResource("QuadMesh_88gj7")
+skeleton = NodePath("../../Test 0/MeshInstance3D")
+surface_material_override/0 = SubResource("ShaderMaterial_acw1p")
+
+[node name="SubViewport" type="SubViewport" parent="Test 1/MeshInstance3D"]
+
+[node name="ColorRect" type="ColorRect" parent="Test 1/MeshInstance3D/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 1, 0, 1)
